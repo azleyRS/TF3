@@ -5,14 +5,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private MyAdapter adapter;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.shuffle:
+                shuffle();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle(R.string.app_name);
+
+
         recyclerView  = findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         adapter = new MyAdapter();
@@ -52,5 +80,10 @@ public class MainActivity extends AppCompatActivity {
         touchHelper.attachToRecyclerView(recyclerView);
         MyItemDecoration itemDecoration = new MyItemDecoration(this, R.dimen.item_space);
         recyclerView.addItemDecoration(itemDecoration);
+    }
+
+    private void shuffle() {
+        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+        adapter.updateWorkersList();
     }
 }
