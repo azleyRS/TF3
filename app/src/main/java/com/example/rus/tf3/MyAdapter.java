@@ -76,8 +76,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         });
         single.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(diffResult -> diffResult.dispatchUpdatesTo(this));
-
+                .subscribe(diffResult -> {
+                    workersList.clear();
+                    workersList.addAll(newWorkersList);
+                    diffResult.dispatchUpdatesTo(this);
+                });
 
     }
 
